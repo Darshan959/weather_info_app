@@ -27,14 +27,35 @@ class WeatherHomePage extends StatefulWidget {
 }
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
+  final TextEditingController _cityController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Weather Info App'),
       ),
-      body: const Center(
-        child: Text('Enter a city to fetch weather data'),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _cityController,
+              decoration: const InputDecoration(
+                labelText: 'Enter city name',
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Weather fetching logic will go here
+              },
+              child: const Text('Fetch Weather'),
+            ),
+            const SizedBox(height: 20),
+            const Text('Weather data will appear here'),
+          ],
+        ),
       ),
     );
   }
