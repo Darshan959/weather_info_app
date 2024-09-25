@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-// Final version
 void main() {
   runApp(const WeatherInfoApp());
 }
@@ -33,13 +32,31 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   String _cityName = '';
   String _temperature = '';
   String _weatherCondition = '';
+  List<Map<String, String>> _weeklyForecast = [];
 
+  // Function to simulate fetching current weather data
   void _fetchWeather() {
+    final random = Random();
     setState(() {
       _cityName = _cityController.text;
-      _temperature = '${(15 + (DateTime.now().second % 16)).toString()} °C';
-      _weatherCondition =
-          ['Sunny', 'Cloudy', 'Rainy'][DateTime.now().second % 3];
+      _temperature = '${15 + random.nextInt(16)} °C';
+      List<String> conditions = ['Sunny', 'Cloudy', 'Rainy'];
+      _weatherCondition = conditions[random.nextInt(3)];
+    });
+  }
+
+  // Function to simulate fetching 7-day weather forecast
+  void _fetch7DayForecast() {
+    final random = Random();
+    List<String> conditions = ['Sunny', 'Cloudy', 'Rainy'];
+    setState(() {
+      _weeklyForecast = List.generate(7, (index) {
+        return {
+          'day': 'Day ${index + 1}',
+          'temperature': '${15 + random.nextInt(16)} °C',
+          'condition': conditions[random.nextInt(3)],
+        };
+      });
     });
   }
 
@@ -68,6 +85,29 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
             Text('City: $_cityName'),
             Text('Temperature: $_temperature'),
             Text('Weather: $_weatherCondition'),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _fetch7DayForecast,
+              child: const Text('Fetch 7-Day Forecast'),
+            ),
+            const SizedBox(height: 20),
+            if (_weeklyForecast.isNotEmpty) ...[
+              const Text('7-Day Weather Forecast:'),
+              const SizedBox(height: 10),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _weeklyForecast.length,
+                  itemBuilder: (context, index) {
+                    final dayForecast = _weeklyForecast[index];
+                    return ListTile(
+                      title: Text('${dayForecast['day']}'),
+                      subtitle: Text(
+                          'Temperature: ${dayForecast['temperature']}, Condition: ${dayForecast['condition']}'),
+                    );
+                  },
+                ),
+              ),
+            ]
           ],
         ),
       ),
