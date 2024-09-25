@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -28,6 +29,24 @@ class WeatherHomePage extends StatefulWidget {
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
   final TextEditingController _cityController = TextEditingController();
+  String _cityName = '';
+  String _temperature = '';
+  String _weatherCondition = '';
+
+  // Function to simulate fetching weather data
+  void _fetchWeather() {
+    final random = Random();
+    setState(() {
+      _cityName = _cityController.text; // Get the entered city name
+
+      // Generate a random temperature between 15°C and 30°C
+      _temperature = '${15 + random.nextInt(16)} °C';
+
+      // Randomly select a weather condition
+      List<String> conditions = ['Sunny', 'Cloudy', 'Rainy'];
+      _weatherCondition = conditions[random.nextInt(3)];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +66,13 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // Weather fetching logic will go here
-              },
+              onPressed: _fetchWeather, // Fetch weather when button is pressed
               child: const Text('Fetch Weather'),
             ),
             const SizedBox(height: 20),
-            const Text('Weather data will appear here'),
+            Text('City: $_cityName'),
+            Text('Temperature: $_temperature'),
+            Text('Weather: $_weatherCondition'),
           ],
         ),
       ),
