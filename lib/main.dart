@@ -33,18 +33,12 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   String _temperature = '';
   String _weatherCondition = '';
 
-  // Function to simulate fetching weather data
   void _fetchWeather() {
-    final random = Random();
     setState(() {
-      _cityName = _cityController.text; // Get the entered city name
-
-      // Generate a random temperature between 15°C and 30°C
-      _temperature = '${15 + random.nextInt(16)} °C';
-
-      // Randomly select a weather condition
-      List<String> conditions = ['Sunny', 'Cloudy', 'Rainy'];
-      _weatherCondition = conditions[random.nextInt(3)];
+      _cityName = _cityController.text;
+      _temperature = '${(15 + (DateTime.now().second % 16)).toString()} °C';
+      _weatherCondition =
+          ['Sunny', 'Cloudy', 'Rainy'][DateTime.now().second % 3];
     });
   }
 
@@ -66,7 +60,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _fetchWeather, // Fetch weather when button is pressed
+              onPressed: _fetchWeather,
               child: const Text('Fetch Weather'),
             ),
             const SizedBox(height: 20),
